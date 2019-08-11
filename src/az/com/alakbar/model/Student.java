@@ -9,6 +9,7 @@ public class Student extends CourseModel {
 	private String address;
 	private Date dob;
 	private String phone;
+	private String email;
 	public String getName() {
 		return name;
 	}
@@ -39,11 +40,24 @@ public class Student extends CourseModel {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	@Override
 	public String toString() {
-		return "Student [name=" + name + ", surname=" + surname + ", address=" + address + ", phone=" + phone + "]";
+		return "Student{" +
+				"name='" + name + '\'' +
+				", surname='" + surname + '\'' +
+				", address='" + address + '\'' +
+				", dob=" + dob +
+				", phone='" + phone + '\'' +
+				", email='" + email + '\'' +
+				'}';
 	}
-	
-	
 }

@@ -13,9 +13,11 @@ $(function () {
          buttons:{
              "Save": function () {
                  addStudent();
-                 $(this).dialog('close');
+             //    $(this).dialog('close');
+
              },
              "Close": function () {
+                 alert('Close the window');
                  $(this).dialog('close');
              }   
          }
@@ -78,7 +80,47 @@ function getTeacherList() {
     });
 }
  function  addStudent() {
-        alert('ok!');
+
+    var name = $('#nameId').val();
+    var surname = $('#surnameId').val();
+    var address = $('#addressId').val();
+    var dob = $('#dobId').val();
+    var phone = $('#phoneId').val();
+    var email = $('#emailId').val();
+
+        if (name.trim() == "" || surname.trim() == ""){
+            alert('Please, fill in!')
+            return;
+        }
+
+    var data = {
+        name: name,
+        surname: surname,
+        address: address,
+        dob: dob,
+        phone: phone,
+        email: email
+    };
+
+    $.ajax({
+        url: 'cs?action=addStudent',
+        type: 'POST',
+        data: data,
+        dataType: 'text',
+
+        success: function (response) {
+            alert('After if!');
+
+            if (response == 'success'){
+                alert('Student has benn  successfully added!');
+                getStudentList();
+            }else {
+                alert('Problem! Student has not benn successfully added!');
+            }
+        }
+
+    });
+
  }
 
 

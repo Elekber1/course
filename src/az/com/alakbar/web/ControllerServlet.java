@@ -21,6 +21,8 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @WebServlet(name = "ControllerServlet", urlPatterns = "/cs")
@@ -34,6 +36,7 @@ public class ControllerServlet extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
         PrintWriter pw = response.getWriter();
         String action = null;
         String address = null;
@@ -82,6 +85,28 @@ public class ControllerServlet extends HttpServlet {
                     List<Teacher> teacherList = teacherService.getTeacherList();
                     request.setAttribute("teacherList",teacherList);
                     address="WEB-INF/pages/teacherListAjax.jsp";
+
+                }else if (action.equalsIgnoreCase("addStudent")){
+                    String name = request.getParameter("name");
+                    String surname = request.getParameter("surname");
+                    String addres = request.getParameter("address");
+                    String phone = request.getParameter("phone");
+                    String email = request.getParameter("email");
+                    String dob = request.getParameter("dob");
+                    Student student = new Student();
+                    student.setName(name);
+                    student.setSurname(surname);
+                    student.setAddress(addres);
+                    student.setPhone(phone);
+                    student.setEmail(email);
+                    if (dob != null)
+                    student.setDob(df.parse(dob));
+                    boolean isAdded = studentService.addStudent(student);
+                    response.setContentType("text/html");
+                    if (isAdded){
+                        pw.print("success");
+                    }else
+                        pw.print("error");
                 }
             }catch (Exception ex){
             ex.printStackTrace();

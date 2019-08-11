@@ -54,8 +54,8 @@ public class StudentDaoImpl  implements StudentDao{
         boolean result = false;
         Connection c = null;
         PreparedStatement ps = null;
-        String sql = "INSERT INTO STUDENT(ID,NAME,SURNAME,DOB,ADDRESS,PHONE)\r\n" +
-                "VALUES(STUDENT_SEQ1.NEXTVAL,?,?,?,?,?)";
+        String sql = "INSERT INTO STUDENT(ID,NAME,SURNAME,DOB,ADDRESS,PHONE,EMAIL)\r\n" +
+                "VALUES(STUDENT_SEQ1.NEXTVAL,?,?,?,?,?,?)";
         try {
             c = DBHelper.getConnection();
             if(c != null) {
@@ -65,6 +65,7 @@ public class StudentDaoImpl  implements StudentDao{
                 ps.setDate(3, new java.sql.Date(student.getDob().getTime()));
                 ps.setString(4, student.getAddress());
                 ps.setString(5, student.getPhone());
+                ps.setString(6,student.getEmail());
                 ps.execute();
                 result = true;
             }else {

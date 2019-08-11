@@ -54,7 +54,9 @@ table{
 
 .lblDesign{
     width: 150px;
-    display: inline-block
+    display: inline-block;
+    margin-bottom: 5px;
+
 }
 
 
