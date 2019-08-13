@@ -1,7 +1,10 @@
+var globBtnId = '';
+
 $(function () {
 
      $('body').layout({ applyDemoStyles: true });
      $('.ui-layout-center,.ui-layout-west,.ui-layout-east,.ui-layout-north,.ui-layout-south').css('background-color','khaki');
+
 
      $('#newStudentDialogId').dialog({
 
@@ -24,6 +27,43 @@ $(function () {
 
      });
 
+     $('#newTeacherDialogId').dialog({
+
+        title: 'New Teacher',
+        height: 400,
+        width: 400,
+        autoOpen: false,
+        modal: true,
+        buttons:{
+            "Save": function () {
+                addTeacher();
+            },
+            "Close": function () {
+                $(this).dialog('close');
+            }
+        }
+     });
+
+     $('#newPaymentDialogId').dialog({
+
+        title: 'New Paygggment',
+        height: 350,
+        width: 400,
+        autoOpen: false,
+        modal: true,
+        buttons:{
+            "Save": function () {
+                addPayment();
+            },
+            "Close": function () {
+                $(this).dialog('close');
+            }
+        }
+     });
+
+
+
+
     $('#studentDataBtnId').click(function () {
         getStudentList();
 
@@ -37,11 +77,42 @@ $(function () {
       // $('#teacherTableId').show();
     });
 
-    $('#newBtnId').click(function () {
+    $('.btnDesign').click(function () {
+      var btnId =  $(this).attr('id');
+        globBtnId = btnId;
+        console.log(globBtnId);
+    });
 
-        $('#newStudentDialogId').load('views/newStudent.jsp',function () {
-            $(this).dialog('open');
-        });
+
+      $('#newBtnId').click(function () {
+
+          switch (globBtnId){
+              case 'studentDataBtnId':
+                  $('#newStudentDialogId').load('views/newStudent.jsp',function () {
+                      $(this).dialog('open');
+
+                  });
+                  break;
+              case 'teacherDataBtnId' :
+                  $('#newTeacherDialogId').dialog('open');
+                  break;
+              case 'lessonDataBtnId' :
+                  alert('New Lesson')
+                  break;
+              case 'paymentDataBtnId' :
+                  $('#newPaymentDialogId').load('ca?action=newPayment',function () {
+                      $(this).dialog('open');
+                    //  getStudentCombo();
+                    //  getTeacherCombo();
+                     // getLessonCombo();
+                  });
+                  break;
+              default:
+                  alert('Please, select menu!')
+          }
+
+
+
 
     });
 
@@ -123,4 +194,11 @@ function getTeacherList() {
 
  }
 
+ function addTeacher() {
+     alert('This is button for adding new teacher!');
+ }
+function addPayment() {
+    alert('This is button for adding new payment!')
+
+}
 

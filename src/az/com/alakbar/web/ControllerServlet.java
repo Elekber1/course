@@ -1,13 +1,18 @@
 package az.com.alakbar.web;
 
+import az.com.alakbar.dao.LessonDao;
 import az.com.alakbar.dao.StudentDao;
 import az.com.alakbar.dao.TeacherDao;
+import az.com.alakbar.dao.impl.LessonDaoImpl;
 import az.com.alakbar.dao.impl.StudentDaoImpl;
 import az.com.alakbar.dao.impl.TeacherDaoImpl;
+import az.com.alakbar.model.Lesson;
 import az.com.alakbar.model.Student;
 import az.com.alakbar.model.Teacher;
+import az.com.alakbar.service.LessonService;
 import az.com.alakbar.service.StudentService;
 import az.com.alakbar.service.TeacherService;
+import az.com.alakbar.service.impl.LessonServiceImpl;
 import az.com.alakbar.service.impl.StudentServiceImpl;
 import az.com.alakbar.service.impl.TeacherServiceImpl;
 
@@ -40,12 +45,15 @@ public class ControllerServlet extends HttpServlet {
         PrintWriter pw = response.getWriter();
         String action = null;
         String address = null;
+
         StudentDao studentDao = new StudentDaoImpl();
         StudentService studentService = new StudentServiceImpl(studentDao);
 
         TeacherDao teacherDao = new TeacherDaoImpl();
         TeacherService teacherService = new TeacherServiceImpl(teacherDao);
 
+        LessonDao lessonDao = new LessonDaoImpl();
+        LessonService lessonService = new LessonServiceImpl(lessonDao);
 
         if (request.getParameter("action") != null) {
             action = request.getParameter("action");
@@ -84,7 +92,7 @@ public class ControllerServlet extends HttpServlet {
                 } else if (action.equalsIgnoreCase("getTeacherList")) {
                     List<Teacher> teacherList = teacherService.getTeacherList();
                     request.setAttribute("teacherList",teacherList);
-                    address="WEB-INF/pages/teacherListAjax.jsp";
+                    address="/WEB-INF/pages/teacherList.jsp";
 
                 }else if (action.equalsIgnoreCase("addStudent")){
                     String name = request.getParameter("name");
@@ -107,7 +115,32 @@ public class ControllerServlet extends HttpServlet {
                         pw.print("success");
                     }else
                         pw.print("error");
+
+                }else if (action.equalsIgnoreCase("getStudentCombo")){
+                    List<Student> studentList = studentService.getStudentList();
+                    request.setAttribute("studentList",studentList);
+                    address = "/WEB-INF/pages/studentCombo.jsp";
+
+                }else if (action.equalsIgnoreCase("getTeacherCombo")){
+                    List<Teacher> teacherList = teacherService.getTeacherList();
+                    request.setAttribute("teacherList",teacherList);
+                    address = "/WEB-INF/pages/teacherCombo.jsp";
+
+                }else if (action.equalsIgnoreCase("getLessonCombo")){
+                    List<Lesson> lessonList = lessonService.getLessonList();
+                    request.setAttribute("lessonList",lessonList);
+                    address = "/WEB-INF/pages/lessonCombo.jsp";
+
+                }else if (action.equalsIgnoreCase("newPayment")){
+                    List<Student> studentList = studentService.getStudentList();
+                    List<Teacher> teacherList = teacherService.getTeacherList();
+                    List<Lesson> lessonList = lessonService.getLessonList();
+                    request.setAttribute("studentList",studentList);
+                    request.setAttribute("teacherList",teacherList);
+                    request.setAttribute("lessonList",lessonList);
+                    address = "/WEB-INF/pages/newPayment.jsp ";
                 }
+
             }catch (Exception ex){
             ex.printStackTrace();
             }

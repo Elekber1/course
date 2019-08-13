@@ -11,7 +11,10 @@
   <script type="text/javascript" src="js/jquery/jquery-latest.js"></script>
   <script type="text/javascript" src="js/jquery/jquery.layout-latest.js"></script>
   <script type="text/javascript" src="js/jquery/jquery-ui.js"></script>
+  <script type="text/javascript" src="js/combo.js"></script>
   <script type="text/javascript" src="js/main.js"></script>
+
+
   <link rel="stylesheet" type="text/css" href="css/layout.css">
   <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
 </head>
@@ -37,15 +40,18 @@
 
 <%-- Information --%>
 <div class="ui-layout-east">
-  <input type="button" value="New" id="newBtnId" class="btnDesign">
+  <input type="button" value="New" id="newBtnId" class="btnDesign1">
 </div>
 
 <%-- Footer --%>
 <div class="ui-layout-south">
-  <div style="text-align: center">Copyright &copy; Alakbar Hacizade</div>
+  <div style="text-align: center">Copyright &copy; Alakbar Hajizada</div>
 </div>
 
 <div id="newStudentDialogId"></div>
+<div id="newTeacherDialogId"></div>
+<div id="newPaymentDialogId"></div>
+
 
 </body>
 </html>
