@@ -97,12 +97,12 @@ $(function () {
                   $('#newTeacherDialogId').dialog('open');
                   break;
               case 'lessonDataBtnId' :
-                  alert('New Lesson')
+                  alert('New Lesson');
                   break;
-              case 'paymentDataBtnId' :
-                  $('#newPaymentDialogId').load('ca?action=newPayment',function () {
+              case 'paymentDataBtnId' :    //ca?action=newPayment
+                  $('#newPaymentDialogId').load('views/newPayment.jsp',function () {
                       $(this).dialog('open');
-                    //  getStudentCombo();
+                      getStudentCombo();
                     //  getTeacherCombo();
                      // getLessonCombo();
                   });
@@ -198,7 +198,38 @@ function getTeacherList() {
      alert('This is button for adding new teacher!');
  }
 function addPayment() {
-    alert('This is button for adding new payment!')
+         var studentCombo = $('#studentComboId').val();
+         var teacherCombo = $('#teacherComboId').val();
+         var lessonCombo = $('#lessonComboId').val();
+         var amount = $('#amountId').val();
+
+         var data = {
+             studentCombo:studentCombo,
+             teacherCombo: teacherCombo,
+             lessonCombo: lessonCombo,
+             amount: amount
+         };
+
+         $.ajax({
+             url: 'cs?action=addPayment',
+             type: 'POST',
+             data: data,
+             dataType: 'text',
+             success: function (response) {
+                 
+             }
+
+         });
 
 }
+
+
+
+
+
+
+
+
+
+
 

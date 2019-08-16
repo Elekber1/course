@@ -28,7 +28,7 @@
     <tr>
 
         <% for (Student student: studentList) {%>
-        <td><%=student.getId()%></td>
+        <td><%=student.getR()%></td>
         <td><%=student.getName()%></td>
         <td><%=student.getSurname()%></td>
         <td><%=student.getAddress()%></td>

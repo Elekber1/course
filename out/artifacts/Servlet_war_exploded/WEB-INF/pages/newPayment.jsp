@@ -1,18 +1,18 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%--
   Created by IntelliJ IDEA.
   User: Elekber
   Date: 12.08.2019
   Time: 10:00
   To change this template use File | Settings | File Templates.
+  <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+   class="cmbDesign"
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <div class="lblDesign">Student:</div>
-<select id="studentComboId" class="cmbDesign">
+<select id="studentComboId">
     <option value="0" selected disabled>Select Student</option>
     <c:forEach items="${studentList}" var="sl">
         <option value="${sl.id}">${sl.name} ${sl.surname}</option>
-
     </c:forEach>
 </select>
 <br>

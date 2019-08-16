@@ -7,6 +7,7 @@ import az.com.alakbar.dao.impl.LessonDaoImpl;
 import az.com.alakbar.dao.impl.StudentDaoImpl;
 import az.com.alakbar.dao.impl.TeacherDaoImpl;
 import az.com.alakbar.model.Lesson;
+import az.com.alakbar.model.Payment;
 import az.com.alakbar.model.Student;
 import az.com.alakbar.model.Teacher;
 import az.com.alakbar.service.LessonService;
@@ -139,6 +140,24 @@ public class ControllerServlet extends HttpServlet {
                     request.setAttribute("teacherList",teacherList);
                     request.setAttribute("lessonList",lessonList);
                     address = "/WEB-INF/pages/newPayment.jsp ";
+
+
+                }else if (action.equalsIgnoreCase("addPayment")){
+                    Long studentCombo = Long.parseLong(request.getParameter("studentCombo"));
+                    Long teacherCombo = Long.parseLong(request.getParameter("teacherCombo"));
+                    Long lessonCombo = Long.parseLong(request.getParameter("lessonCombo"));
+                    Double amount = Double.parseDouble(request.getParameter("amount"));
+                    Payment payment = new Payment();
+                    Student student = new Student();
+                    student.setId(studentCombo);
+                    Teacher teacher = new Teacher();
+                    teacher.setId(teacherCombo);
+                    Lesson lesson = new Lesson();
+                    lesson.setId(lessonCombo);
+                    payment.setStudent(student);
+                    payment.setTeacher(teacher);
+                    payment.setLesson(lesson);
+                    payment.setAmount(amount);
                 }
 
             }catch (Exception ex){
