@@ -1,4 +1,6 @@
 var globBtnId = '';
+var globStudentId = 0;
+
 
 $(function () {
 
@@ -27,7 +29,30 @@ $(function () {
 
      });
 
-     $('#newTeacherDialogId').dialog({
+    $('#editStudentDialogId').dialog({
+
+        title: 'Update Student',
+        height: 400,
+        width: 400,
+        autoOpen: false,
+        modal: true,
+        buttons:{
+            "Update": function () {
+               updateStudent();
+              //  editStudent();
+                //    $(this).dialog('close');
+
+            },
+            "Close": function () {
+                alert('Close the window');
+                $(this).dialog('close');
+            }
+        }
+
+    });
+
+
+    $('#newTeacherDialogId').dialog({
 
         title: 'New Teacher',
         height: 400,
@@ -46,8 +71,8 @@ $(function () {
 
      $('#newPaymentDialogId').dialog({
 
-        title: 'New Paygggment',
-        height: 350,
+        title: 'New Payment',
+        height: 400,
         width: 400,
         autoOpen: false,
         modal: true,
@@ -77,6 +102,11 @@ $(function () {
       // $('#teacherTableId').show();
     });
 
+    $('#paymentDataBtnId').click(function () {
+       getPaymentList();
+
+    });
+
     $('.btnDesign').click(function () {
       var btnId =  $(this).attr('id');
         globBtnId = btnId;
@@ -91,20 +121,20 @@ $(function () {
                   $('#newStudentDialogId').load('views/newStudent.jsp',function () {
                       $(this).dialog('open');
 
-                  });
+                  })
                   break;
-              case 'teacherDataBtnId' :
+              case 'teacherDataBtnId' :;
                   $('#newTeacherDialogId').dialog('open');
                   break;
               case 'lessonDataBtnId' :
                   alert('New Lesson');
                   break;
-              case 'paymentDataBtnId' :    //ca?action=newPayment
+              case 'paymentDataBtnId' :    //cs?action=newPay  views/newPayment.jsp
                   $('#newPaymentDialogId').load('views/newPayment.jsp',function () {
                       $(this).dialog('open');
                       getStudentCombo();
-                    //  getTeacherCombo();
-                     // getLessonCombo();
+                      getTeacherCombo();
+                      getLessonCombo();
                   });
                   break;
               default:
@@ -150,47 +180,63 @@ function getTeacherList() {
 
     });
 }
- function  addStudent() {
 
-    var name = $('#nameId').val();
-    var surname = $('#surnameId').val();
-    var address = $('#addressId').val();
-    var dob = $('#dobId').val();
-    var phone = $('#phoneId').val();
-    var email = $('#emailId').val();
-
-        if (name.trim() == "" || surname.trim() == ""){
-            alert('Please, fill in!')
-            return;
-        }
-
-    var data = {
-        name: name,
-        surname: surname,
-        address: address,
-        dob: dob,
-        phone: phone,
-        email: email
-    };
+function getPaymentList() {
 
     $.ajax({
-        url: 'cs?action=addStudent',
-        type: 'POST',
-        data: data,
-        dataType: 'text',
+       url: 'cs?action=getPaymentList',
+        type: 'GET',
+        dataType: 'html',
 
         success: function (response) {
-            alert('After if!');
-
-            if (response == 'success'){
-                alert('Student has benn  successfully added!');
-                getStudentList();
-            }else {
-                alert('Problem! Student has not benn successfully added!');
-            }
+            $('.ui-layout-center').html(response);
+        },
+        error: function (response) {
+            alert('Error');
         }
-
     });
+}
+
+ function  addStudent() {
+
+      var name = $('#nameId').val();
+     var surname = $('#surnameId').val();
+     var address = $('#addressId').val();
+     var dob = $('#dobId').val();
+     var phone = $('#phoneId').val();
+     var email = $('#emailId').val();
+
+     if (name.trim() == "" || surname.trim() == ""){
+         alert('Please, fill in!')
+         return;
+     }
+
+     var data = {
+         name: name,
+         surname: surname,
+         address: address,
+         dob: dob,
+         phone: phone,
+         email: email
+     };
+
+     $.ajax({
+         url: 'cs?action=addStudent',
+         type: 'POST',
+         data: data,
+         dataType: 'text',
+
+         success: function (response) {
+             if (response == 'success'){
+                 alert('Student has benn  successfully added!');
+                 $('#newStudentDialogId').dialog('close');
+                 getStudentList();
+             }else {
+                 alert('Problem! Student has not benn successfully added!');
+             }
+         }
+
+     });
 
  }
 
@@ -202,6 +248,10 @@ function addPayment() {
          var teacherCombo = $('#teacherComboId').val();
          var lessonCombo = $('#lessonComboId').val();
          var amount = $('#amountId').val();
+
+         if (studentCombo == 0 || teacherCombo == 0|| lessonCombo == 0){
+             alert('Please select combo!');
+         }
 
          var data = {
              studentCombo:studentCombo,
@@ -216,16 +266,102 @@ function addPayment() {
              data: data,
              dataType: 'text',
              success: function (response) {
-                 
+
+                 if (response == 'success'){
+                     alert('Payment has benn  successfully added!');
+                     getPaymentList();
+                     $('#newPaymentDialogId').dialog('close');
+                 }else {
+                     alert('Problem! Payment has not benn successfully added!');
+                 }
+
              }
 
          });
 
 }
 
+function editStudent(studentId) {
+    globStudentId = studentId;
+    $.ajax({
+       url: 'cs?action=editStudent',
+       type: 'GET',
+       data: 'studentId='+studentId,
+       dataType: 'html',
+       success:function (data) {
+           $('#editStudentDialogId').html(data);
+           $('#editStudentDialogId').dialog('open');
+       } 
+    });
+}
 
+function updateStudent() {
 
+    var name = $('#nameId1').val();
+    var surname = $('#surnameId1').val();
+    var address = $('#addressId1').val();
+    var dob = $('#dobId1').val();
+    var phone = $('#phoneId1').val();
+    var email = $('#emailId1').val();
 
+    if (name.trim() == "" || surname.trim() == ""){
+        alert('Please, fill in!')
+        return;
+    }
+
+    var data = {
+        name: name,
+        surname: surname,
+        address: address,
+        dob: dob,
+        phone: phone,
+        email: email,
+        studentId: globStudentId
+    };
+
+    $.ajax({
+        url: 'cs?action=updateStudent',
+        type: 'POST',
+        data: data,
+        dataType: 'text',
+
+        success: function (response) {
+            if (response == 'success'){
+                alert('Student has benn  successfully updated!');
+                $('#newStudentDialogId').dialog('close');
+                getStudentList();
+                $('#editStudentDialogId').dialog('close');
+            }else {
+                alert('Problem! Student has not benn successfully updated!');
+            }
+        }
+
+    });
+
+}
+
+function deleteStudent(studentId, studentFullname) {
+
+    var isDelete = confirm('Are you sure?'); ;
+    if (!isDelete){
+    alert(studentFullname+'has not been successfully deleted!');
+    return ;
+    }
+    $.ajax({
+       url: 'cs?action=deleteStudent',
+        type: 'POST',
+        data: 'studentId='+studentId,
+        dataType: 'text',
+        success: function (response) {
+            if(response == 'success'){
+            alert('Student has been successfully deleted');
+            getStudentList();
+            }else{
+                alert('Student has not been successfully deleted!');
+            }
+        }
+    });
+}
 
 
 

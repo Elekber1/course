@@ -1,9 +1,11 @@
 package az.com.alakbar.web;
 
 import az.com.alakbar.dao.LessonDao;
+import az.com.alakbar.dao.PaymentDao;
 import az.com.alakbar.dao.StudentDao;
 import az.com.alakbar.dao.TeacherDao;
 import az.com.alakbar.dao.impl.LessonDaoImpl;
+import az.com.alakbar.dao.impl.PaymentDaoImpl;
 import az.com.alakbar.dao.impl.StudentDaoImpl;
 import az.com.alakbar.dao.impl.TeacherDaoImpl;
 import az.com.alakbar.model.Lesson;
@@ -11,9 +13,11 @@ import az.com.alakbar.model.Payment;
 import az.com.alakbar.model.Student;
 import az.com.alakbar.model.Teacher;
 import az.com.alakbar.service.LessonService;
+import az.com.alakbar.service.PaymentService;
 import az.com.alakbar.service.StudentService;
 import az.com.alakbar.service.TeacherService;
 import az.com.alakbar.service.impl.LessonServiceImpl;
+import az.com.alakbar.service.impl.PaymentServiceImpl;
 import az.com.alakbar.service.impl.StudentServiceImpl;
 import az.com.alakbar.service.impl.TeacherServiceImpl;
 
@@ -42,7 +46,7 @@ public class ControllerServlet extends HttpServlet {
     }
 
     private void processRequest(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        DateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
         PrintWriter pw = response.getWriter();
         String action = null;
         String address = null;
@@ -55,6 +59,9 @@ public class ControllerServlet extends HttpServlet {
 
         LessonDao lessonDao = new LessonDaoImpl();
         LessonService lessonService = new LessonServiceImpl(lessonDao);
+
+        PaymentDao paymentDao = new PaymentDaoImpl();
+        PaymentService paymentService = new PaymentServiceImpl(paymentDao);
 
         if (request.getParameter("action") != null) {
             action = request.getParameter("action");
@@ -132,14 +139,14 @@ public class ControllerServlet extends HttpServlet {
                     request.setAttribute("lessonList",lessonList);
                     address = "/WEB-INF/pages/lessonCombo.jsp";
 
-                }else if (action.equalsIgnoreCase("newPayment")){
+                }else if (action.equalsIgnoreCase("newPay")){
                     List<Student> studentList = studentService.getStudentList();
                     List<Teacher> teacherList = teacherService.getTeacherList();
                     List<Lesson> lessonList = lessonService.getLessonList();
                     request.setAttribute("studentList",studentList);
                     request.setAttribute("teacherList",teacherList);
                     request.setAttribute("lessonList",lessonList);
-                    address = "/WEB-INF/pages/newPayment.jsp ";
+                    address = "/WEB-INF/pages/newPay.jsp ";
 
 
                 }else if (action.equalsIgnoreCase("addPayment")){
@@ -158,7 +165,58 @@ public class ControllerServlet extends HttpServlet {
                     payment.setTeacher(teacher);
                     payment.setLesson(lesson);
                     payment.setAmount(amount);
+                    boolean isAdded = paymentService.addPayment(payment);
+                    response.setContentType("text/html");
+                    if (isAdded){
+                        pw.write("Success");
+                    }else {
+                        pw.write("Error");
+                    }
+
+                }else if (action.equalsIgnoreCase("getPaymentList")){
+                    List<Payment> paymentList = paymentService.getPaymentList();
+                    request.setAttribute("paymentList",paymentList);
+                    address = "/WEB-INF/pages/paymentList.jsp";
+
+                }else if(action.equalsIgnoreCase("editStudent")){
+                    Long studentId = Long.parseLong(request.getParameter("studentId"));
+                    Student student = studentService.getStudentById(studentId);
+                    request.setAttribute("student",student);
+                    address = "/WEB-INF/pages/editStudent.jsp";
+
+                }else if(action.equalsIgnoreCase("updateStudent")){
+                    Long studentId = Long.parseLong(request.getParameter("studentId"));
+                    String name = request.getParameter("name");
+                    String surname = request.getParameter("surname");
+                    String addres = request.getParameter("address");
+                    String phone = request.getParameter("phone");
+                    String email = request.getParameter("email");
+                    String dob = request.getParameter("dob");
+                    Student student = new Student();
+                    student.setName(name);
+                    student.setSurname(surname);
+                    student.setAddress(addres);
+                    student.setPhone(phone);
+                    student.setEmail(email);
+                    if (dob != null)
+                        student.setDob(df.parse(dob));
+                    boolean isUpdated = studentService.updateStudent(student,studentId);
+                    response.setContentType("text/html");
+                    if (isUpdated){
+                        pw.print("success");
+                    }else
+                        pw.print("error");
+
+                }else if(action.equalsIgnoreCase("deleteStudent")){
+                    Long studentId = Long.parseLong(request.getParameter("studentId"));
+                    boolean isDelete = studentService.deleteStudent(studentId);
+                    if(isDelete){
+                        pw.print("success");
+                    }else {
+                        pw.print("error");
+                    }
                 }
+
 
             }catch (Exception ex){
             ex.printStackTrace();

@@ -13,10 +13,10 @@ function getStudentCombo() {
 function getTeacherCombo() {
     
     $.ajax({
-       url: 'cs?action:=getTeacherCombo',
+       url: 'cs?action=getTeacherCombo',
        type: 'GET',
        dataType: 'html',
-       success: function () {
+       success: function (data) {
            $('#teacherComboId').html(data);
 
        } 
@@ -29,7 +29,7 @@ function getLessonCombo() {
        url: 'cs?action=getLessonCombo',
        type: 'GET',
        dataType: 'html',
-       success: function () {
+       success: function (data) {
            $('#lessonComboId').html(data);
 
        } 

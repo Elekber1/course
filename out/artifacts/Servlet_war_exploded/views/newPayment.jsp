@@ -8,8 +8,8 @@
 
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<div class="lblDesign" class="cmbDesign">Student:</div>
-<select id="studentComboId">
+<div class="lblDesign">Student:</div>
+<select id="studentComboId" class="cmbDesign" >
     <option value="0" selected disabled>Select Student</option>
     <c:forEach items="${studentList}" var="sl">
         <option value="${sl.id}">${sl.name} ${sl.surname}</option>
@@ -17,17 +17,17 @@
 </select>
 <br>
 
-<div class="lblDesign" class="cmbDesign">Teacher:</div>
-<select id="teacherComboId">
+<div class="lblDesign" >Teacher:</div>
+<select id="teacherComboId"  class="cmbDesign">
     <option value="0" selected disabled>Select Teacher</option>
-    <c:forEach items="${teacherList}" var="tl">
-        <option value= "${tl.id}">${tl.name} ${tl.surname}</option>
-    </c:forEach>
+<c:forEach items="${teacherList}" var="tl">
+    <option value= "${tl.id}">${tl.name} ${tl.surname}</option>
+</c:forEach>
 </select>
 <br>
 
-<div class="lblDesign" class="cmbDesign">Lesson:</div>
-<select id="lessonComboId">
+<div class="lblDesign">Lesson:</div>
+<select id="lessonComboId"  class="cmbDesign">
     <option value="0" selected disabled>Select Lesson</option>
     <c:forEach items="${lessonList}" var="ll">
         <option value="${ll.id}">${ll.lessonName}</option>

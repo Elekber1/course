@@ -8,13 +8,18 @@
 <html>
 <head>
   <title>Course</title>
+
   <script type="text/javascript" src="js/jquery/jquery-latest.js"></script>
   <script type="text/javascript" src="js/jquery/jquery.layout-latest.js"></script>
+  <script type="text/javascript" src="js/jquery/jquery.dataTables.min.js"></script>
   <script type="text/javascript" src="js/jquery/jquery-ui.js"></script>
+
   <script type="text/javascript" src="js/main.js"></script>
   <script type="text/javascript" src="js/combo.js"></script>
   <link rel="stylesheet" type="text/css" href="css/layout.css">
   <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
+  <link rel="stylesheet" type="text/css" href="css/jquery.dataTables.min.css">
+
 </head>
 <body>
 
@@ -49,7 +54,7 @@
 <div id="newStudentDialogId"></div>
 <div id="newTeacherDialogId"></div>
 <div id="newPaymentDialogId"></div>
-
+<div id="editStudentDialogId"></div>
 
 </body>
 </html>

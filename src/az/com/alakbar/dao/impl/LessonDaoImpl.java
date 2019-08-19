@@ -18,7 +18,7 @@ public class LessonDaoImpl implements LessonDao {
         Connection c = null;  // connection db
         PreparedStatement ps = null; // sql-i run almaga hazirilayir
         ResultSet rs = null; // sql den qayidan neticeni ozunde sahliyir
-        String sql = "SELECT ROWNUM r, ID, LESSON_NAME, LESSON_TIME, LESSON_PRICE FROM LESSON " +
+        String sql = "SELECT  ID, LESSON_NAME, LESSON_TIME, LESSON_PRICE FROM LESSON " +
                 "WHERE ACTIVE = 1";
         try {
             c = DBHelper.getConnection();
@@ -27,7 +27,7 @@ public class LessonDaoImpl implements LessonDao {
                 rs = ps.executeQuery();
                 while (rs.next()){
                     Lesson lesson = new Lesson();
-                    lesson.setR(rs.getLong('r'));
+                   // lesson.setR(rs.getLong('r'));
                     lesson.setId(rs.getLong("ID"));
                     lesson.setLessonName(rs.getString("LESSON_NAME"));
                     lesson.setLessonTime(rs.getInt("LESSON_TIME"));

@@ -86,7 +86,7 @@ public class StudentDaoImpl  implements StudentDao{
         Connection c = null;
         PreparedStatement ps = null;
         ResultSet rs = null;
-        String sql = "SELECT ID,NAME,SURNAME,DOB,ADDRESS,PHONE FROM STUDENT"
+        String sql = "SELECT ID,NAME,SURNAME,DOB,ADDRESS,PHONE, EMAIL FROM STUDENT"
                 + " WHERE ACTIVE = 1 AND ID = ?";
         try {
             c = DBHelper.getConnection();
@@ -100,6 +100,7 @@ public class StudentDaoImpl  implements StudentDao{
                     student.setDob(rs.getDate("DOB"));
                     student.setAddress(rs.getString("ADDRESS"));
                     student.setPhone(rs.getString("PHONE"));
+                    student.setEmail(rs.getString("EMAIL"));
                 }
             }else {
                 System.out.println("Connection is null!");
