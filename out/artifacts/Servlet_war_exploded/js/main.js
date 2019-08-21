@@ -1,12 +1,53 @@
 var globBtnId = '';
 var globStudentId = 0;
-
+var globPaymentId    = 0;
 
 $(function () {
 
      $('body').layout({ applyDemoStyles: true });
      $('.ui-layout-center,.ui-layout-west,.ui-layout-east,.ui-layout-north,.ui-layout-south').css('background-color','khaki');
 
+
+    $('#newPaymentDialogId').dialog({
+
+        title: 'New Payment',
+        height: 400,
+        width: 400,
+        autoOpen: false,
+        modal: true,
+        buttons:{
+            "Save": function () {
+                addPayment();
+
+            },
+            "Close": function () {
+                $(this).dialog('close');
+            }
+        }
+    });
+
+
+    $('#editPaymentDialogId').dialog({
+
+        title: 'Update Payment',
+        height: 400,
+        width: 400,
+        autoOpen: false,
+        modal: true,
+        buttons:{
+            "Update": function () {
+                updatePayment();
+            },
+            "Close": function () {
+                $(this).dialog('close');
+            }
+        }
+    });
+
+    $('#paymentDataBtnId').click(function () {
+        getPaymentList();
+
+    });
 
      $('#newStudentDialogId').dialog({
 
@@ -69,26 +110,6 @@ $(function () {
         }
      });
 
-     $('#newPaymentDialogId').dialog({
-
-        title: 'New Payment',
-        height: 400,
-        width: 400,
-        autoOpen: false,
-        modal: true,
-        buttons:{
-            "Save": function () {
-                addPayment();
-            },
-            "Close": function () {
-                $(this).dialog('close');
-            }
-        }
-     });
-
-
-
-
     $('#studentDataBtnId').click(function () {
         getStudentList();
 
@@ -102,15 +123,13 @@ $(function () {
       // $('#teacherTableId').show();
     });
 
-    $('#paymentDataBtnId').click(function () {
-       getPaymentList();
 
-    });
 
     $('.btnDesign').click(function () {
       var btnId =  $(this).attr('id');
         globBtnId = btnId;
         console.log(globBtnId);
+        $('#keywordId').val('');
     });
 
 
@@ -123,13 +142,13 @@ $(function () {
 
                   })
                   break;
-              case 'teacherDataBtnId' :;
+              case 'teacherDataBtnId':
                   $('#newTeacherDialogId').dialog('open');
                   break;
               case 'lessonDataBtnId' :
                   alert('New Lesson');
                   break;
-              case 'paymentDataBtnId' :    //cs?action=newPay  views/newPayment.jsp
+              case 'paymentDataBtnId':    //cs?action=newPay  views/newPayment.jsp
                   $('#newPaymentDialogId').load('views/newPayment.jsp',function () {
                       $(this).dialog('open');
                       getStudentCombo();
@@ -146,7 +165,57 @@ $(function () {
 
     });
 
+      $('#searchBtnId').click(function () {
+          var keyword = $('#keywordId').val();
+          console.log(keyword);
+
+          switch (globBtnId){
+              case 'studentDataBtnId':
+                  searchStudentData(keyword);
+
+                  break;
+              case 'teacherDataBtnId':
+
+                  break;
+              case 'lessonDataBtnId':
+
+                  break;
+              case 'paymentDataBtnId':
+                  searchPaymentData(keyword);
+
+                  break;
+              default:
+                  alert('Please, select menu!')
+          }
+      });
+
+    $('#keywordId').keyup(function () {
+        var keyword = $(this).val();
+        console.log(keyword);
+
+        switch (globBtnId){
+            case 'studentDataBtnId':
+                searchStudentData(keyword);
+
+                break;
+            case 'teacherDataBtnId':
+
+                break;
+            case 'lessonDataBtnId':
+
+                break;
+            case 'paymentDataBtnId':
+                searchPaymentData(keyword);
+
+                break;
+            default:
+                alert('Please, select menu!')
+        }
+
 });
+
+
+    });
 
 function getStudentList() {
 
@@ -181,21 +250,9 @@ function getTeacherList() {
     });
 }
 
-function getPaymentList() {
 
-    $.ajax({
-       url: 'cs?action=getPaymentList',
-        type: 'GET',
-        dataType: 'html',
 
-        success: function (response) {
-            $('.ui-layout-center').html(response);
-        },
-        error: function (response) {
-            alert('Error');
-        }
-    });
-}
+
 
  function  addStudent() {
 
@@ -243,43 +300,7 @@ function getPaymentList() {
  function addTeacher() {
      alert('This is button for adding new teacher!');
  }
-function addPayment() {
-         var studentCombo = $('#studentComboId').val();
-         var teacherCombo = $('#teacherComboId').val();
-         var lessonCombo = $('#lessonComboId').val();
-         var amount = $('#amountId').val();
 
-         if (studentCombo == 0 || teacherCombo == 0|| lessonCombo == 0){
-             alert('Please select combo!');
-         }
-
-         var data = {
-             studentCombo:studentCombo,
-             teacherCombo: teacherCombo,
-             lessonCombo: lessonCombo,
-             amount: amount
-         };
-
-         $.ajax({
-             url: 'cs?action=addPayment',
-             type: 'POST',
-             data: data,
-             dataType: 'text',
-             success: function (response) {
-
-                 if (response == 'success'){
-                     alert('Payment has benn  successfully added!');
-                     getPaymentList();
-                     $('#newPaymentDialogId').dialog('close');
-                 }else {
-                     alert('Problem! Payment has not benn successfully added!');
-                 }
-
-             }
-
-         });
-
-}
 
 function editStudent(studentId) {
     globStudentId = studentId;
@@ -294,6 +315,7 @@ function editStudent(studentId) {
        } 
     });
 }
+
 
 function updateStudent() {
 
@@ -363,7 +385,148 @@ function deleteStudent(studentId, studentFullname) {
     });
 }
 
+// #################  PAYMENT  ###################################
 
+
+
+
+
+function getPaymentList() {
+
+    $.ajax({
+        url: 'cs?action=getPaymentList',
+        type: 'GET',
+        dataType: 'html',
+
+        success: function (response) {
+            $('.ui-layout-center').html(response);
+        },
+        error: function (response) {
+            alert('Error');
+        }
+    });
+}
+
+function editPayment(paymentId) {
+    globPaymentId = paymentId;
+    $.ajax({
+        url: 'cs?action=editPayment',
+        type: 'GET',
+        data: 'paymentId='+paymentId,
+        dataType: 'html',
+        success: function (response) {
+            $('#editPaymentDialogId').html(response);
+            $('#editPaymentDialogId').dialog('open');
+        }
+
+    });
+}
+
+
+function addPayment() {
+    var studentCombo = $('#studentComboId').val();
+    var teacherCombo = $('#teacherComboId').val();
+    var lessonCombo = $('#lessonComboId').val();
+    var amount = $('#amountId').val();
+
+    if (studentCombo == 0 || teacherCombo == 0|| lessonCombo == 0){
+        alert('Please select combo!');
+    }
+
+    var data = {
+        studentCombo:studentCombo,
+        teacherCombo: teacherCombo,
+        lessonCombo: lessonCombo,
+        amount: amount
+    };
+
+    $.ajax({
+        url: 'cs?action=addPayment',
+        type: 'POST',
+        data: data,
+        dataType: 'text',
+        success: function (response) {
+
+            if (response == 'success'){
+                alert('Payment has benn  successfully added!');
+                getPaymentList();
+                $('#newPaymentDialogId').dialog('close');
+            }else {
+                alert('Problem! Payment has not benn successfully added!');
+            }
+
+        }
+
+    });
+
+}
+
+function updatePayment() {
+    var studentCombo = $('#studentComboId1').val();
+    var teacherCombo = $('#teacherComboId1').val();
+    var lessonCombo = $('#lessonComboId1').val();
+    var amount = $('#amountId1').val();
+
+    if (studentCombo == 0 || teacherCombo == 0|| lessonCombo == 0){
+        alert('Please select combo!');
+    }
+
+    var data = {
+        studentCombo:studentCombo,
+        teacherCombo: teacherCombo,
+        lessonCombo: lessonCombo,
+        amount: amount,
+        paymentId: globPaymentId
+    };
+
+    $.ajax({
+        url: 'cs?action=updatePayment',
+        type: 'POST',
+        data: data,
+        dataType: 'text',
+        success: function (response) {
+
+            if (response == 'success'){
+                alert('Payment has benn  successfully updated!');
+                getPaymentList();
+                $('#editPaymentDialogId').dialog('close');
+            }else {
+                alert('Problem! Payment has not benn successfully updated!');
+            }
+
+        }
+
+    });
+}
+
+function deletePayment(paymentId) {
+    globPaymentId = paymentId;
+}
+
+function searchStudentData(keyword) {
+    $.ajax({
+       url: 'cs?action=searchStudentData',
+       type: 'GET',
+       data: 'keyword='+keyword,
+       dataType: 'html',
+        success: function (response) {
+            $('.ui-layout-center').html(response);
+        }
+    });
+}
+
+function searchPaymentData(keyword) {
+        $.ajax({
+           url: 'cs?action=searchPaymentData',
+           type: 'GET',
+           data: 'keyword='+keyword,
+           dataType: 'html',
+           success: function (response) {
+               $('.ui-layout-center').html(response);
+
+           } 
+        });
+}
 
 
 

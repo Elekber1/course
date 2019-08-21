@@ -16,6 +16,7 @@
 
   <script type="text/javascript" src="js/main.js"></script>
   <script type="text/javascript" src="js/combo.js"></script>
+  <script type="text/javascript" src="js/payment.js"></script>
   <link rel="stylesheet" type="text/css" href="css/layout.css">
   <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
   <link rel="stylesheet" type="text/css" href="css/jquery.dataTables.min.css">
@@ -44,6 +45,9 @@
 <%-- Information --%>
 <div class="ui-layout-east">
   <input type="button" value="New" id="newBtnId" class="btnDesign1">
+  <input type="text" id="keywordId" placeholder="Search" style="width: 64%"/>
+  <input type="button" id="searchBtnId" value="Search" style="width: 33%"/>
+
 </div>
 
 <%-- Footer --%>
@@ -52,9 +56,9 @@
 </div>
 
 <div id="newStudentDialogId"></div>
+<div id="editStudentDialogId"></div>
 <div id="newTeacherDialogId"></div>
 <div id="newPaymentDialogId"></div>
-<div id="editStudentDialogId"></div>
-
+<div id="editPaymentDialogId"></div>
 </body>
 </html>

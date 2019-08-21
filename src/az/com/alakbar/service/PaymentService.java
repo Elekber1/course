@@ -8,4 +8,8 @@ public interface PaymentService {
 
     List<Payment> getPaymentList() throws Exception;
     boolean addPayment(Payment payment) throws Exception;
+    Payment getPaymentId(Long paymentId) throws Exception;
+    boolean updatePayment(Payment  payment) throws Exception;
+    List<Payment> searchPaymentData(String keyword) throws Exception;
+
 }

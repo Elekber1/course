@@ -25,4 +25,19 @@ public class PaymentServiceImpl implements PaymentService{
     public boolean addPayment(Payment payment) throws Exception {
         return paymentDao.addPayment(payment);
     }
+
+    @Override
+    public Payment getPaymentId(Long paymentId) throws Exception {
+        return paymentDao.getPaymentId(paymentId);
+    }
+
+    @Override
+    public boolean updatePayment(Payment payment) throws Exception {
+        return paymentDao.updatePayment(payment);
+    }
+
+    @Override
+    public List<Payment> searchPaymentData(String keyword) throws Exception {
+        return paymentDao.searchPaymentData(keyword);
+    }
 }

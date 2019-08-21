@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="java.util.List" %>
 <%@ page import="az.com.alakbar.model.Teacher" %><%--
   Created by IntelliJ IDEA.
@@ -23,20 +24,25 @@
     </thead>
 
     <tbody>
+<c:forEach items="teacherList" var="th">
 
 
-    <tr>
+</c:forEach>
 
-        <% for (Teacher teacher: teacherList) {%>
-        <td><%=teacher.getId()%></td>
-        <td><%=teacher.getName()%></td>
-        <td><%=teacher.getSurname()%></td>
-        <td><%=teacher.getAddress()%></td>
-        <td><%=teacher.getDob()%></td>
 
-    </tr>
-    <%}%>
     </tbody>
 
 </table>
 
+
+<%--<tr>--%>
+
+<%--<% for (Teacher teacher: teacherList) {%>--%>
+<%--<td><%=teacher.getId()%></td>--%>
+<%--<td><%=teacher.getName()%></td>--%>
+<%--<td><%=teacher.getSurname()%></td>--%>
+<%--<td><%=teacher.getAddress()%></td>--%>
+<%--<td><%=teacher.getDob()%></td>--%>
+
+<%--</tr>--%>
+<%--<%}%>--%>

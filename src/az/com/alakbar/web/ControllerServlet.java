@@ -20,6 +20,7 @@ import az.com.alakbar.service.impl.LessonServiceImpl;
 import az.com.alakbar.service.impl.PaymentServiceImpl;
 import az.com.alakbar.service.impl.StudentServiceImpl;
 import az.com.alakbar.service.impl.TeacherServiceImpl;
+import az.com.alakbar.util.Constants;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -168,9 +169,9 @@ public class ControllerServlet extends HttpServlet {
                     boolean isAdded = paymentService.addPayment(payment);
                     response.setContentType("text/html");
                     if (isAdded){
-                        pw.write("Success");
+                        pw.print("Success");
                     }else {
-                        pw.write("Error");
+                        pw.print("Error");
                     }
 
                 }else if (action.equalsIgnoreCase("getPaymentList")){
@@ -215,9 +216,68 @@ public class ControllerServlet extends HttpServlet {
                     }else {
                         pw.print("error");
                     }
+
+
+                }else if (action.equalsIgnoreCase("editPayment")){
+                    List<Student> studentList = studentService.getStudentList();
+                    List<Teacher> teacherList = teacherService.getTeacherList();
+                    List<Lesson> lessonList = lessonService.getLessonList();
+                    request.setAttribute("studentList",studentList);
+                    request.setAttribute("teacherList",teacherList);
+                    request.setAttribute("lessonList",lessonList);
+                   Long paymentId = Long.parseLong(request.getParameter("paymentId"));
+                   Payment payment = paymentService.getPaymentId(paymentId);
+                   request.setAttribute("payment", payment);
+                   address = "/WEB-INF/pages/editPayment.jsp";
+
+
+                }else if(action.equalsIgnoreCase("updatePayment")){
+
+                    Long studentCombo = Long.parseLong(request.getParameter("studentCombo"));
+                    Long teacherCombo = Long.parseLong(request.getParameter("teacherCombo"));
+                    Long lessonCombo = Long.parseLong(request.getParameter("lessonCombo"));
+                    Double amount = Double.parseDouble(request.getParameter("amount"));
+                    Long paymentId = Long.parseLong(request.getParameter("paymentId"));
+                    Payment payment = new Payment();
+                    payment.setId(paymentId);
+                    Student student = new Student();
+                    student.setId(studentCombo);
+                    Teacher teacher = new Teacher();
+                    teacher.setId(teacherCombo);
+                    Lesson lesson = new Lesson();
+                    lesson.setId(lessonCombo);
+                    payment.setStudent(student);
+                    payment.setTeacher(teacher);
+                    payment.setLesson(lesson);
+                    payment.setAmount(amount);
+                    boolean isUpdated = paymentService.updatePayment(payment);
+                    response.setContentType("text/html");
+                    if (isUpdated){
+                        pw.print("Success");
+                    }else {
+                        pw.print("Error");
+                    }
+
+                }else if(action.equalsIgnoreCase("deletePayment")){
+
+
+                }else if(action.equalsIgnoreCase(Constants.SEARCH_STUDENT_DATA)){
+                    String keyword = request.getParameter("keyword");
+                    List<Student> studentList =  studentService.searchStudentData(keyword);
+                    request.setAttribute("studentList",studentList);
+                    address = "/WEB-INF/pages/studentListAjax.jsp";
+
+
+                }else if(action.equalsIgnoreCase(Constants.SEARCH_PAYMENT_DATA)){
+                    String keyword = request.getParameter("keyword");
+                    List<Payment> paymentList = paymentService.searchPaymentData(keyword);
+                    List<Teacher> teacherList = teacherService.getTeacherList();
+                    List<Lesson> lessonList = lessonService.getLessonList();
+                    request.setAttribute("teacherList",teacherList);
+                    request.setAttribute("lessonList",lessonList);
+                    request.setAttribute("paymentList",paymentList);
+                    address = "/WEB-INF/pages/paymentList.jsp";
                 }
-
-
             }catch (Exception ex){
             ex.printStackTrace();
             }
