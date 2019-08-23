@@ -17,9 +17,9 @@
   <script type="text/javascript" src="js/main.js"></script>
   <script type="text/javascript" src="js/combo.js"></script>
   <script type="text/javascript" src="js/payment.js"></script>
-  <link rel="stylesheet" type="text/css" href="css/layout.css">
-  <link rel="stylesheet" type="text/css" href="css/jquery-ui.css">
-  <link rel="stylesheet" type="text/css" href="css/jquery.dataTables.min.css">
+  <link rel="stylesheet" type="text/css" href="css/layout.css" />
+  <link rel="stylesheet" type="text/css" href="css/jquery-ui.css" />
+  <link rel="stylesheet" type="text/css" href="css/jquery.dataTables.min.css" />
 
 </head>
 <body>

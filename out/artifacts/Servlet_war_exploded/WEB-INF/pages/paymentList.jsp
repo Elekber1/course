@@ -13,12 +13,27 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%--<%List<Payment> paymentList = (List<Payment>) request.getAttribute("paymentList");%>--%>
 <script type="text/javascript">
+
+    $('.datePicker').datepicker({
+        changeMonth: true,
+        changeYear: true
+
+    });
+
     $('#accordion').accordion({
        collapsible: true
     });
 
     $('#paymentTableId').DataTable({
         'searching': false
+    });
+
+    $('#advLessonComboId').change(function () {
+        getTeacherComboByLessonId($(this).val());
+    });
+
+    $('#advSearchBtnId').click(function () {
+        advancedSearchPaymentData();
     });
 </script>
 
@@ -39,50 +54,54 @@
         </select> <br>
         <input type="text" placeholder="Min Amount..." id="minAmountId" />&nbsp;
         <input type="text" placeholder="Max Amount..." id="maxAmountId" /><br>
-        <input type="text" placeholder="Begin Date..." id="beginDateId" />&nbsp;
-        <input type="text" placeholder="End Date..." id="endDateId" /><br>&nbsp;
-        <input type="button" id="advSearchBtnId" value="Search" />
-
+        <input type="text" placeholder="Begin Date..." id="beginDateId" class="datePicker"/>&nbsp;
+        <input type="text" placeholder="End Date..." id="endDateId" class="datePicker" /><br>&nbsp;
+        <input type="button" id="advSearchBtnId" value="Search" />&nbsp;
     </div>
+</div>
+
+    <div id="paymentTableDivId">
+
+    <table id="paymentTableId" class="display" style="width:100%" >
+
+        <thead>
+        <tr>
+            <th>№</th>
+            <th>Student Fullname</th>
+            <th>Lesson Name</th>
+            <th>Teacher Fullname</th>
+            <th>Amount(AZN)</th>
+            <th>Payment Date</th>
+            <th>Edit</th>
+            <th>Delete</th>
+        </tr>
+        </thead>
+
+        <tbody>
 
 
-<table id="paymentTableId" class="display" style="width:100%" >
+        <c:forEach items="${paymentList}" var="pl">
 
-    <thead>
-    <tr>
-        <th>№</th>
-        <th>Student Fullname</th>
-        <th>Lesson Name</th>
-        <th>Teacher Fullname</th>
-        <th>Amount(AZN)</th>
-        <th>Payment Date</th>
-        <th>Edit</th>
-        <th>Delete</th>
-    </tr>
-    </thead>
+            <tr>
+                <td>${pl.id}</td>
+                <td>${pl.student.name} ${pl.student.surname}</td>
+                <td>${pl.lesson.lessonName}</td>
+                <td>${pl.teacher.name} ${pl.teacher.surname}</td>
+                <td>${pl.amount}</td>
+                <td>${pl.payDate}</td>
+                <td><a href="javascript: editPayment('${pl.id}');">Edit</a></td>
+                <td><a href="javascript: deletePayment('${pl.id}');">Delete</a></td>
+            </tr>
 
-<tbody>
+        </c:forEach>
 
 
-<c:forEach items="${paymentList}" var="pl">
+        </tbody>
 
-    <tr>
-    <td>${pl.id}</td>
-    <td>${pl.student.name} ${pl.student.surname}</td>
-    <td>${pl.lesson.lessonName}</td>
-    <td>${pl.teacher.name} ${pl.teacher.surname}</td>
-    <td>${pl.amount}</td>
-    <td>${pl.payDate}</td>
-    <td><a href="javascript: editPayment('${pl.id}');">Edit</a></td>
-    <td><a href="javascript: deletePayment('${pl.id}');">Delete</a></td>
-    </tr>
-
-</c:forEach>
+    </table>
 
 
-</tbody>
-
-</table>
+</div>
 
 
 

@@ -36,6 +36,20 @@ function getLessonCombo() {
     });
 }
 
+function getTeacherComboByLessonId(lessonId) {
+        $.ajax({
+           url: 'cs?action=getTeacherComboByLessonId',
+            type: 'GET',
+            data: 'lessonId='+lessonId,
+            dataType: 'html',
+            success: function (data) {
+                $('#advTeacherComboId').html(data);
+            }
+        });
+    
+}
+
+
 
 
 

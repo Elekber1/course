@@ -1,6 +1,7 @@
 package az.com.alakbar.service.impl;
 
 import az.com.alakbar.dao.PaymentDao;
+import az.com.alakbar.model.AdvancedSearch;
 import az.com.alakbar.model.Payment;
 import az.com.alakbar.service.PaymentService;
 
@@ -39,5 +40,10 @@ public class PaymentServiceImpl implements PaymentService{
     @Override
     public List<Payment> searchPaymentData(String keyword) throws Exception {
         return paymentDao.searchPaymentData(keyword);
+    }
+
+    @Override
+    public List<Payment> advancedSearchPaymentData(AdvancedSearch advancedSearch) throws Exception {
+        return paymentDao.advancedSearchPaymentData(advancedSearch);
     }
 }

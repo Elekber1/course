@@ -160,9 +160,6 @@ $(function () {
                   alert('Please, select menu!')
           }
 
-
-
-
     });
 
       $('#searchBtnId').click(function () {
@@ -189,31 +186,31 @@ $(function () {
           }
       });
 
-    $('#keywordId').keyup(function () {
-        var keyword = $(this).val();
-        console.log(keyword);
-
-        switch (globBtnId){
-            case 'studentDataBtnId':
-                searchStudentData(keyword);
-
-                break;
-            case 'teacherDataBtnId':
-
-                break;
-            case 'lessonDataBtnId':
-
-                break;
-            case 'paymentDataBtnId':
-                searchPaymentData(keyword);
-
-                break;
-            default:
-                alert('Please, select menu!')
-        }
 
 });
 
+$('#keywordId').keyup(function () {
+    var keyword = $(this).val();
+    console.log(keyword);
+
+    switch (globBtnId){
+        case 'studentDataBtnId':
+            searchStudentData(keyword);
+
+            break;
+        case 'teacherDataBtnId':
+
+            break;
+        case 'lessonDataBtnId':
+
+            break;
+        case 'paymentDataBtnId':
+            searchPaymentData(keyword);
+
+            break;
+        default:
+            alert('Please, select menu!')
+    }
 
     });
 
@@ -527,6 +524,45 @@ function searchPaymentData(keyword) {
            } 
         });
 }
+
+function advancedSearchPaymentData() {
+    var advLessonCombo  = $('#advLessonComboId').val();
+    var advTeacherCombo = $('#advTeacherComboId').val();
+    var minAmount = $('#minAmountId').val();
+    var maxAmount = $('#maxAmountId').val();
+    var beginDate = $('#beginDateId').val();
+    var endDate = $('#endDateId').val();
+
+    var data={
+        advLessonCombo:advLessonCombo,
+        advTeacherCombo: advTeacherCombo,
+        minAmount: minAmount,
+        maxAmount:maxAmount,
+        beginDate:beginDate,
+        endDate:endDate
+    };
+
+    $.ajax({
+       url: 'cs?action=advancedSearchPaymentData',
+        type: 'GET',
+        data: data,
+        dataType: 'html',
+        success: function (response) {
+            $('#paymentTableDivId').html(response);
+
+        }
+    });
+    
+}
+
+
+
+
+
+
+
+
+
 
 
 

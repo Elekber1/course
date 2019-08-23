@@ -7,5 +7,5 @@ import java.util.List;
 public interface TeacherService {
 
     List<Teacher> getTeacherList() throws Exception;
-
+    List<Teacher> getTeacherComboByLessonId(Long lessonId) throws Exception;
 }

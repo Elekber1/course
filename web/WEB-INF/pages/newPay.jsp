@@ -30,8 +30,8 @@
 <select id="lessonComboId"  class="cmbDesign">
     <option value="0" selected disabled>Select Lesson</option>
     <c:forEach items="${lessonList}" var="ll">
-        <option value="${ll.id}">${ll.lessonName}</option>
-    </c:forEach>
+    <option value="${ll.id}">${ll.lessonName}</option>
+</c:forEach>
 </select>
 <br>
 

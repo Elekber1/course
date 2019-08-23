@@ -8,10 +8,7 @@ import az.com.alakbar.dao.impl.LessonDaoImpl;
 import az.com.alakbar.dao.impl.PaymentDaoImpl;
 import az.com.alakbar.dao.impl.StudentDaoImpl;
 import az.com.alakbar.dao.impl.TeacherDaoImpl;
-import az.com.alakbar.model.Lesson;
-import az.com.alakbar.model.Payment;
-import az.com.alakbar.model.Student;
-import az.com.alakbar.model.Teacher;
+import az.com.alakbar.model.*;
 import az.com.alakbar.service.LessonService;
 import az.com.alakbar.service.PaymentService;
 import az.com.alakbar.service.StudentService;
@@ -176,6 +173,10 @@ public class ControllerServlet extends HttpServlet {
 
                 }else if (action.equalsIgnoreCase("getPaymentList")){
                     List<Payment> paymentList = paymentService.getPaymentList();
+                    List<Teacher> teacherList = teacherService.getTeacherList();
+                    List<Lesson> lessonList = lessonService.getLessonList();
+                    request.setAttribute("teacherList",teacherList);
+                    request.setAttribute("lessonList",lessonList);
                     request.setAttribute("paymentList",paymentList);
                     address = "/WEB-INF/pages/paymentList.jsp";
 
@@ -271,13 +272,45 @@ public class ControllerServlet extends HttpServlet {
                 }else if(action.equalsIgnoreCase(Constants.SEARCH_PAYMENT_DATA)){
                     String keyword = request.getParameter("keyword");
                     List<Payment> paymentList = paymentService.searchPaymentData(keyword);
-                    List<Teacher> teacherList = teacherService.getTeacherList();
-                    List<Lesson> lessonList = lessonService.getLessonList();
-                    request.setAttribute("teacherList",teacherList);
-                    request.setAttribute("lessonList",lessonList);
                     request.setAttribute("paymentList",paymentList);
                     address = "/WEB-INF/pages/paymentList.jsp";
-                }
+                }else if(action.equalsIgnoreCase(Constants.GET_TEACHER_COMBO_BY_LESSON_ID)){
+                    Long lessonId = Long.parseLong(request.getParameter("lessonId"));
+                    List<Teacher> teacherList = teacherService.getTeacherComboByLessonId(lessonId);
+                    request.setAttribute("teacherList",teacherList);
+                    address = "/WEB-INF/pages/teacherCombo.jsp";
+
+                    }else if(action.equalsIgnoreCase(Constants.ADVANCED_SEARCH_PAYMENT_DATA)){
+                    String min1Amount = request.getParameter("minAmount");
+                    String max1Amount = request.getParameter("maxAmount");
+                    Double minAmount = null;
+                    Double maxAmount = null;
+                    Long advLessonCombo = Long.parseLong(request.getParameter("advLessonCombo"));
+                    Long advTeacherCombo = Long.parseLong(request.getParameter("advTeacherCombo"));
+                    if(min1Amount != null && !min1Amount.isEmpty()){
+                        minAmount = Double.parseDouble(min1Amount);
+                    }
+                    if(max1Amount != null && !max1Amount.isEmpty()){
+                      maxAmount = Double.parseDouble(max1Amount);
+                    }
+
+
+                    String beginDate = request.getParameter("beginDate");
+                    String endDate = request.getParameter("endDate");
+                    AdvancedSearch  advancedSearch = new AdvancedSearch();
+                    advancedSearch.setLessonId(advLessonCombo);
+                    advancedSearch.setTeacherId(advTeacherCombo);
+                    advancedSearch.setMaxAmount(maxAmount);
+                    advancedSearch.setMinAmount(minAmount);
+                    advancedSearch.setBeginDate(beginDate);
+                    advancedSearch.setEndDate(endDate);
+                    List<Payment> paymentList = paymentService.advancedSearchPaymentData(advancedSearch);
+                    request.setAttribute("paymentList",paymentList);
+                    address = "/WEB-INF/pages/paymentData.jsp";
+
+                    }
+
+
             }catch (Exception ex){
             ex.printStackTrace();
             }
@@ -288,3 +321,4 @@ public class ControllerServlet extends HttpServlet {
 }
 
 
+;
